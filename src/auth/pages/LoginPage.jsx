@@ -25,8 +25,6 @@ const formSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters." }),
 });
 
-import { Label } from "@/components/ui/label";
-
 export const LoginPage = () => {
   // Config react-hook-form with zodResolver and init values
   const form = useForm({
