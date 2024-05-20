@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 
-export const App = () => {
+export const ControlPayApp = () => {
   return (
     <>
       <h1 className="text-3xl font-bold underline">App</h1>
-      <Button>Click me</Button>
+      <Button>
+        <Trash2 />
+      </Button>
     </>
   );
 };
