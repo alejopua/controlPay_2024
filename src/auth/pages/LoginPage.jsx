@@ -1,10 +1,47 @@
 import { Link } from "react-router-dom";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+import { FaGoogle } from "react-icons/fa";
+
+// formSchema of form using Zod
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email address." }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters." }),
+});
+
 import { Label } from "@/components/ui/label";
 
 export const LoginPage = () => {
+  // Config react-hook-form with zodResolver and init values
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      // Defined init values
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
     <>
       <div className="container relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -25,44 +62,82 @@ export const LoginPage = () => {
         </div>
 
         <div className="flex items-center justify-center py-12">
-          <div className="mx-auto grid w-[350px] gap-6">
+          <div className="mx-auto grid w-[350px] gap-5">
             <div className="grid gap-2 text-center">
               <h1 className="text-3xl font-bold">Login</h1>
-              <p className="text-balance text-muted-foreground">
-                Enter your email below to login to your account
-              </p>
             </div>
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" type="name" placeholder="Jack Neil" required />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    to="/forgot-password"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Forgot your password?
-                  </Link>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="grid gap-2">
+                  <div className="grid gap-2 mb-2">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="you@example.com"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage>
+                            {form.formState.errors.email?.message}
+                          </FormMessage>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex items-center">
+                            <FormLabel>Password</FormLabel>
+                            <Link
+                              to="/forgot-password"
+                              className="ml-auto inline-block text-sm underline"
+                            >
+                              Forgot your password?
+                            </Link>
+                          </div>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="******"
+                              {...field}
+                            />
+                          </FormControl>
+
+                          <FormMessage>
+                            {form.formState.errors.password?.message}
+                          </FormMessage>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <Button type="submit" className="w-full">
+                    Login
+                  </Button>
                 </div>
-                <Input id="password" type="password" required />
+              </form>
+            </Form>
+
+            <div className="grid gap-3">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t"></span>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
               </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
               <Button variant="outline" className="w-full">
-                Login with Google
+                <FaGoogle className="mr-1" /> Google
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
