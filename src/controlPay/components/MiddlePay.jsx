@@ -25,7 +25,7 @@ export const MiddlePay = ({
             Number.isInteger(percentage)
               ? percentage.toString()
               : percentage.toFixed(1)
-          }%) }`}</h2>
+          }%)`}</h2>
           <h3>{date}</h3>
         </div>
       </div>
