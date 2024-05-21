@@ -30,8 +30,8 @@ export const StarPay = ({
               Number.isInteger(amount) ? amount.toString() : amount.toFixed(1)
             } USD (${
               Number.isInteger(percentage)
-                ? amount.toString()
-                : amount.toFixed(1)
+                ? percentage.toString()
+                : percentage.toFixed(1)
             }%)`}
           </h2>
           <h3>{date}</h3>
