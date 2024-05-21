@@ -22,6 +22,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PaymentsLayout } from "../layout/PaymentsLayout";
 import { StarPay } from "../components/StartPay";
+import PaymentModal from "../components/PaymentModal";
 
 const DEFAULT_STATE = {
   payments: [
@@ -143,7 +144,8 @@ export const ControlPayPage = () => {
                   date={"2022-01-22"}
                   addPrevPay={() => {}}
                   addNextPay={() => {}}
-                  paymentModalComponent={() => {}}
+                  PaymentModalComponent={PaymentModal}
+                  paymentModalProps={{ id: "oeee" }}
                 />
 
                 {/* pay middle */}
