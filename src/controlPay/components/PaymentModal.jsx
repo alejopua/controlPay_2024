@@ -22,15 +22,29 @@ import {
 } from "@/components/ui/select";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PiTrashLight } from "react-icons/pi";
+import { FaCheck } from "react-icons/fa";
 
-const PaymentModal = ({ id }) => {
-  console.log(id);
+const PaymentModal = ({ payment }) => {
+  const statusPay = "pendings";
   return (
     <>
       <Dialog>
-        <DialogTrigger asChild>
-          <button className="relative size-16 flex items-center justify-center bg-gray-200 border-black border-2  rounded-full group">
-            <MdOutlineModeEditOutline className="size-5 text-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <DialogTrigger
+          disabled={statusPay === "pending" ? false : true}
+          asChild
+        >
+          <button
+            className={`relative size-16 flex items-center justify-center ${
+              statusPay === "pending"
+                ? "bg-gray-200 border-black border-2"
+                : "bg-green-500"
+            } rounded-full group`}
+          >
+            {statusPay === "pending" ? (
+              <MdOutlineModeEditOutline className="size-5 text-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            ) : (
+              <FaCheck className="size-5 text-black " />
+            )}
           </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
