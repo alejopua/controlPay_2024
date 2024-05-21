@@ -12,7 +12,13 @@ const initialState = {
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    login: (state, action) => {},
+    logout: (state, payload) => {},
+    checkingCredentials: (state) => {
+      state.status = "checking";
+    },
+  },
 });
 
-export const {} = authSlice.actions;
+export const { login, logout, checkingCredentials } = authSlice.actions;
