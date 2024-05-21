@@ -20,6 +20,46 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { BsFillPlusCircleFill } from "react-icons/bs";
+import { FaCirclePlus } from "react-icons/fa6";
+import { MdOutlineModeEditOutline } from "react-icons/md";
+
+const DEFAULT_STATE = {
+  payments: [
+    {
+      id: crypto.randomUUID(),
+      name: "Anticipo",
+      amount: 91.0,
+      percentage: 100,
+      status: "pending",
+      date: "2022-01-22",
+    },
+    {
+      id: crypto.randomUUID(),
+      name: "pago 1",
+      amount: 91.0,
+      percentage: 100,
+      status: "pending",
+      date: "2022-01-23",
+    },
+    {
+      id: crypto.randomUUID(),
+      name: "pago 2",
+      amount: 91.0,
+      percentage: 100,
+      status: "pending",
+      date: "2022-01-24",
+    },
+    {
+      id: crypto.randomUUID(),
+      name: "pago 3",
+      amount: 91.0,
+      percentage: 100,
+      status: "pending",
+      date: "2022-01-25",
+    },
+  ],
+  totalAmount: 182.0,
+};
 
 export const ControlPayPage = () => {
   return (
@@ -94,146 +134,31 @@ export const ControlPayPage = () => {
             </CardHeader>
             <CardContent>
               <hr />
+              <div className="w-full py-14 pb-6">
+                <div className="flex items-center justify-start">
+                  <div className="h-36 relative w-fit flex flex-row items-start ">
+                    <div className="h-fit relative flex opacity-100 transition-opacity duration-300 hover:opacity-100 top-8">
+                      <span className="absolute top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-gray-200 text-xs text-center rounded-full flex items-center justify-center">
+                        +
+                      </span>
+                      <div className="h-0.5 w-8 bg-gray-200 rounded"></div>
+                    </div>
+                    <div className="relative flex flex-col justify-center items-center top-0">
+                      <button className="relative size-16 flex items-center justify-center bg-gray-200 border-black border-2  rounded-full group">
+                        <MdOutlineModeEditOutline className="size-5 text-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </button>
 
-              <div className="w-full py-6">
-                <div className="flex">
-                  <div className="w-1/4">
-                    <div className="relative mb-2">
-                      <div className="w-10 h-10 mx-auto bg-green-500 rounded-full text-lg text-white flex items-center">
-                        <span className="text-center text-white w-full">0</span>
+                      <div className="absolute w-max text-xs text-center md:text-base top-16">
+                        <h1>{"Anticipo"}</h1>
+                        <h2>{"54,6 USD (30%)"}</h2>
+                        <h3>{"22 Ene, 2022"}</h3>
                       </div>
                     </div>
-                    <div className="text-xs text-center md:text-base">
-                      Select Server
-                    </div>
-                  </div>
-
-                  <div className="w-1/4">
-                    <div className="relative mb-2">
-                      <div
-                        className="absolute flex align-center items-center align-middle content-center"
-                        style={{
-                          width: "calc(100% - 2.5rem - 1rem)",
-                          top: "50%",
-                          transform: "translate(-50%, -50%)",
-                        }}
-                      >
-                        <div className="w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
-                          <div
-                            className="w-0 bg-green-300 py-1 rounded"
-                            style={{ width: "100%" }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div className="w-10 h-10 mx-auto bg-green-500 rounded-full text-lg text-white flex items-center">
-                        <span className="text-center text-white w-full">
-                          <svg
-                            className="w-full fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                          >
-                            <path
-                              className="heroicon-ui"
-                              d="M19 10h2a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2h-2a1 1 0 0 1 0-2h2V8a1 1 0 0 1 2 0v2zM9 12A5 5 0 1 1 9 2a5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h5a5 5 0 0 1 5 5v2z"
-                            />
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-xs text-center md:text-base">
-                      Add User
-                    </div>
-                  </div>
-
-                  <div className="w-1/4">
-                    <div className="relative mb-2">
-                      <div
-                        className="absolute flex align-center items-center align-middle content-center"
-                        style={{
-                          width: "calc(100% - 2.5rem - 1rem)",
-                          top: "50%",
-                          transform: "translate(-50%, -50%)",
-                        }}
-                      >
-                        <div className="w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
-                          <div
-                            className="w-0 bg-green-300 py-1 rounded"
-                            style={{ width: "50%" }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div className="w-10 h-10 mx-auto bg-white border-2 border-gray-200 rounded-full text-lg text-white flex items-center">
-                        <span className="text-center text-gray-600 w-full"></span>
-                      </div>
-                    </div>
-                    <div className="text-xs text-center md:text-base">
-                      Setting
-                    </div>
-                  </div>
-
-                  <div className="w-1/4">
-                    <div className="relative mb-2">
-                      <div
-                        className="absolute flex align-center items-center align-middle content-center"
-                        style={{
-                          width: "calc(100% - 2.5rem - 1rem)",
-                          top: "50%",
-                          transform: "translate(-50%, -50%)",
-                        }}
-                      >
-                        <div className="w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
-                          <div
-                            className="w-0 bg-green-300 py-1 rounded"
-                            style={{ width: "0%" }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div className="w-10 h-10 mx-auto bg-white border-2 border-gray-200 rounded-full text-lg text-white flex items-center">
-                        <span className="text-center text-gray-600 w-full">
-                          <svg
-                            className="w-full fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                          >
-                            <path
-                              className="heroicon-ui"
-                              d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z"
-                            />
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-xs text-center md:text-base">
-                      Finished
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full py-6">
-                <div className="flex">
-                  <div className="w-1/4">
-                    <div className="relative mb-2">
-                      <div className="w-1/2 z-0 absolute left-0 top-1/2 transform -translate-y-1/2 ">
-                        <div className="h-0.5 w-full bg-gray-200 rounded items-center align-middle align-center flex-1"></div>
-                      </div>
-
-                      <div className="z-20 relative w-10 h-10 mx-auto bg-gray-200 rounded-full text-lg text-white flex items-center">
-                        <span className="text-center text-white w-full">0</span>
-                      </div>
-
-                      <div className="w-1/2 z-0 absolute right-0 top-1/2 transform -translate-y-1/2 ">
-                        <div className="h-0.5 w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
-                          <BsFillPlusCircleFill className="absolute -right-2 w-5 h-5 top-1/2 transform -translate-y-1/2 opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-xs text-center md:text-base">
-                      Add User
+                    <div className="h-fit relative flex opacity-100 transition-opacity duration-300 hover:opacity-100 top-8">
+                      <div className="h-0.5 w-16 bg-gray-200 rounded"></div>
+                      <span className="absolute right-0 top-1/2 transform -translate-y-1/2 size-4 bg-gray-200 text-xs text-center rounded-full">
+                        +
+                      </span>
                     </div>
                   </div>
                 </div>
