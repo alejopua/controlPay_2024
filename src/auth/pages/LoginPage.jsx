@@ -40,6 +40,10 @@ export const LoginPage = () => {
     console.log(data);
   };
 
+  const signInWithGoogle = () => {
+    console.log("Sign in with Google");
+  };
+
   return (
     <>
       <div className="container relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -134,7 +138,11 @@ export const LoginPage = () => {
                   </span>
                 </div>
               </div>
-              <Button variant="outline" className="w-full">
+              <Button
+                onClick={signInWithGoogle}
+                variant="outline"
+                className="w-full"
+              >
                 <FaGoogle className="mr-1" /> Google
               </Button>
             </div>
