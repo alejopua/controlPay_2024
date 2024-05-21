@@ -5,7 +5,8 @@ export const StarPay = ({
   date,
   addPrevPay,
   addNextPay,
-  paymentModalComponent,
+  PaymentModalComponent,
+  paymentModalProps,
 }) => {
   return (
     <div className="h-36 relative w-fit flex flex-row items-start ">
@@ -19,7 +20,9 @@ export const StarPay = ({
         <div className="h-0.5 w-8 bg-gray-200 rounded"></div>
       </div>
       <div className="relative flex flex-col justify-center items-center top-0">
-        {paymentModalComponent && <paymentModalComponent />}
+        {PaymentModalComponent && (
+          <PaymentModalComponent {...paymentModalProps} />
+        )}
         <div className="absolute w-max text-xs text-center md:text-base top-16">
           <h1>{title}</h1>
           <h2>
