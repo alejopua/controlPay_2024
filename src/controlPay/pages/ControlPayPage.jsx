@@ -19,11 +19,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PaymentsLayout } from "../layout/PaymentsLayout";
 import { StarPay } from "../components/StartPay";
 import PaymentModal from "../components/PaymentModal";
 import { MiddlePay } from "../components/MiddlePay";
+import { EndPay } from "../components/EndPay";
 
 const DEFAULT_STATE = {
   payments: [
@@ -151,6 +151,17 @@ export const ControlPayPage = () => {
 
                 {/* pay middle */}
                 <MiddlePay
+                  title={"pago 1"}
+                  amount={91.0}
+                  percentage={100}
+                  date={"2022-01-23"}
+                  addNextPay={() => {}}
+                  PaymentModalComponent={PaymentModal}
+                  paymentModalProps={{ id: "oeee M" }}
+                />
+
+                {/* End Pay */}
+                <EndPay
                   title={"pago 1"}
                   amount={91.0}
                   percentage={100}
