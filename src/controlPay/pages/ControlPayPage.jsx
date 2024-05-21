@@ -147,6 +147,7 @@ export const ControlPayPage = () => {
                   addNextPay={() => {}}
                   PaymentModalComponent={PaymentModal}
                   paymentModalProps={{ id: "oeee S" }}
+                  statusPay={"pendings"}
                 />
 
                 {/* pay middle */}
@@ -158,6 +159,7 @@ export const ControlPayPage = () => {
                   addNextPay={() => {}}
                   PaymentModalComponent={PaymentModal}
                   paymentModalProps={{ id: "oeee M" }}
+                  statusPay={"pendings"}
                 />
 
                 {/* End Pay */}
@@ -169,6 +171,7 @@ export const ControlPayPage = () => {
                   addNextPay={() => {}}
                   PaymentModalComponent={PaymentModal}
                   paymentModalProps={{ id: "oeee M" }}
+                  statusPay={"pendings"}
                 />
               </PaymentsLayout>
             </CardContent>
