@@ -17,7 +17,8 @@ import { Input } from "@/components/ui/input";
 
 import { FaGoogle } from "react-icons/fa";
 import { checkingAuthentication, startGoogleSingIn } from "@/store/auth/thunks";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useMemo } from "react";
 
 // formSchema of form using Zod
 const formSchema = z.object({
@@ -28,7 +29,10 @@ const formSchema = z.object({
 });
 
 export const LoginPage = () => {
+  const { status } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const isAuthenticating = useMemo(() => status === "checking", [status]);
 
   // Config react-hook-form with zodResolver and init values
   const form = useForm({
@@ -41,7 +45,9 @@ export const LoginPage = () => {
   });
 
   const onSubmit = (data) => {
-    dispatch(checkingAuthentication(data.email, data.password));
+    dispatch(
+      checkingAuthentication({ email: data.email, password: data.password })
+    );
   };
 
   const signInWithGoogle = () => {
@@ -125,7 +131,11 @@ export const LoginPage = () => {
                       )}
                     />
                   </div>
-                  <Button type="submit" className="w-full">
+                  <Button
+                    disabled={isAuthenticating}
+                    type="submit"
+                    className="w-full"
+                  >
                     Login
                   </Button>
                 </div>
@@ -144,6 +154,7 @@ export const LoginPage = () => {
                 </div>
               </div>
               <Button
+                disabled={isAuthenticating}
                 onClick={signInWithGoogle}
                 variant="outline"
                 className="w-full"
