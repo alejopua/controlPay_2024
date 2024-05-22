@@ -24,6 +24,9 @@ import { StarPay } from "../components/StartPay";
 import PaymentModal from "../components/PaymentModal";
 import { MiddlePay } from "../components/MiddlePay";
 import { EndPay } from "../components/EndPay";
+import { useDispatch, useSelector } from "react-redux";
+import { startLogout } from "@/store/auth/thunks";
+import { Badge } from "@/components/ui/badge";
 
 const DEFAULT_STATE = {
   payments: [
@@ -64,6 +67,14 @@ const DEFAULT_STATE = {
 };
 
 export const ControlPayPage = () => {
+  const { displayName } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const onLogout = () => {
+    console.log("logout");
+    dispatch(startLogout());
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:px-6">
@@ -94,18 +105,26 @@ export const ControlPayPage = () => {
         </Sheet>
         <div className="flex w-auto items-center justify-between gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <DropdownMenu>
+            <h2 className="font-bold">
+              {displayName.charAt(0).toUpperCase() + displayName.slice(1)}
+            </h2>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
                 <Avatar className="h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                  <AvatarFallback>OM</AvatarFallback>
+                  <AvatarImage
+                    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Avatar"
+                  />
+                  <AvatarFallback>
+                    {displayName.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={onLogout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
