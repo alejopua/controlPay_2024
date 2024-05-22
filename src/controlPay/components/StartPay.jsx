@@ -1,9 +1,11 @@
 export const StarPay = ({
   data,
+  position,
   addPrevPay,
   addNextPay,
   PaymentModalComponent,
   paymentModalProps,
+  showButton,
 }) => {
   return (
     <div className="h-36 relative w-fit flex flex-row items-start ">
@@ -47,7 +49,7 @@ export const StarPay = ({
           )}
         </div>
       </div>
-      <div className="h-fit relative flex opacity-100 transition-opacity duration-300 hover:opacity-100 top-8">
+      <div className="h-fit relative flex top-8">
         <div
           className={`h-0.5 w-16 ${
             data.status === "pending" ? "bg-gray-200" : "bg-green-600"
@@ -55,7 +57,10 @@ export const StarPay = ({
         ></div>
         <button
           onClick={() => addNextPay(data.id)}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gray-200 text-xs text-center rounded-full flex items-center justify-center"
+          disabled={showButton}
+          className={`absolute z-50 right-[-12px] top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gray-200 text-xs text-center rounded-full flex items-center justify-center ${
+            showButton ? "opacity-0" : "opacity-0 hover:opacity-100"
+          } transition-opacity duration-300`}
         >
           +
         </button>
