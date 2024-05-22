@@ -26,7 +26,11 @@ import { PaymentsLayout } from "../layout/PaymentsLayout";
 // import { EndPay } from "../components/EndPay";
 import { useDispatch, useSelector } from "react-redux";
 import { startLogout } from "@/store/auth/thunks";
-import { splitNext, splitPrev } from "@/store/controlSlice/controlSlice";
+import {
+  removePayment,
+  splitNext,
+  splitPrev,
+} from "@/store/controlSlice/controlSlice";
 import { PaymentItem } from "../components/PaymentItem";
 
 export const ControlPayPage = () => {
@@ -47,6 +51,10 @@ export const ControlPayPage = () => {
 
   const handleSplitNext = (id) => {
     dispatch(splitNext(id));
+  };
+
+  const handleRemove = (id) => {
+    dispatch(removePayment(id));
   };
 
   // const handleUpdatePayment = (id, name, amount, percentage, date) => {
