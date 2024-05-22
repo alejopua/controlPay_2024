@@ -87,4 +87,4 @@ export const controlSlice = createSlice({
   },
 });
 
-export const { splitPrev, splitNext } = controlSlice.actions;
+export const { splitPrev, splitNext, removePayment } = controlSlice.actions;
