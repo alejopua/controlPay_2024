@@ -8,7 +8,7 @@ export const EndPay = ({
     <div className="h-36 relative w-fit flex flex-row items-start ">
       <div className="h-fit relative flex opacity-100 transition-opacity duration-300 hover:opacity-100 top-8">
         <div
-          className={`h-0.5 w-12 ${
+          className={`h-0.5 w-16 ${
             data.status === "pending" ? "bg-gray-200" : "bg-green-600"
           } rounded`}
         ></div>
@@ -28,7 +28,7 @@ export const EndPay = ({
             Number.isInteger(data.percentage)
               ? data.percentage.toString()
               : data.percentage.toFixed(1)
-          }%) }`}</h2>
+          }%)`}</h2>
           {data.status !== "pending" ? (
             <span>
               <p className="text-sm text-green-600">{`Pagado el ${data.date}`}</p>
