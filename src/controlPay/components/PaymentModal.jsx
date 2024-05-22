@@ -24,14 +24,26 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PiTrashLight } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { removePayment } from "@/store/controlSlice/controlSlice";
+import { pay, removePayment } from "@/store/controlSlice/controlSlice";
+import { useState } from "react";
 
 const PaymentModal = ({ payment }) => {
+  const [paymentMethod, setPaymentMethod] = useState("");
+
   const dispatch = useDispatch();
 
-  const handleRemove = (id) => {
-    dispatch(removePayment(id));
+  const handleRemove = () => {
+    dispatch(removePayment(payment.id));
   };
+
+  const handlePay = () => {
+    if (paymentMethod) {
+      dispatch(pay({ id: payment.id, method: paymentMethod }));
+    } else {
+      alert("Please select a payment method.");
+    }
+  };
+
   return (
     <>
       <Dialog>
@@ -63,7 +75,12 @@ const PaymentModal = ({ payment }) => {
               <Label htmlFor="state" className="text-right">
                 Estado
               </Label>
-              <Select id="state" placeholder="Select a Payment">
+              <Select
+                value={paymentMethod}
+                onValueChange={setPaymentMethod}
+                id="state"
+                placeholder="Select a Payment"
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select a Payment" />
                 </SelectTrigger>
@@ -81,7 +98,7 @@ const PaymentModal = ({ payment }) => {
             <DialogClose asChild>
               <Button
                 // onClick={() => handleRemove(payment.id)}
-                onClick={() => handleRemove(payment.id)}
+                onClick={handleRemove}
                 variant="outline"
                 size="icon"
               >
@@ -90,9 +107,7 @@ const PaymentModal = ({ payment }) => {
             </DialogClose>
 
             <DialogClose asChild>
-              <Button onClick={() => console.log("Pago asignado y guardado")}>
-                Guardar
-              </Button>
+              <Button onClick={handlePay}>Guardar</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
