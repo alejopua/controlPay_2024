@@ -1,7 +1,9 @@
+import { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { startCreatingUserWithEmailPassword } from "@/store/auth/thunks";
 import { Link } from "react-router-dom";
-
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
@@ -14,9 +16,8 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useDispatch, useSelector } from "react-redux";
-import { startCreatingUserWithEmailPassword } from "@/store/auth/thunks";
-import { useMemo } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 // formSchema of form using Zod
 const formSchema = z.object({
@@ -30,10 +31,13 @@ const formSchema = z.object({
 });
 
 export const RegisterPage = () => {
-  // const { status } = useSelector((state) => state.auth);
+  const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  // const isAuthenticating = useMemo(() => status === "checking", [status]);
+  const isCheckingAuthentication = useMemo(
+    () => status === "checking",
+    [status]
+  );
 
   // Config react-hook-form with zodResolver and init values
   const form = useForm({
@@ -151,9 +155,27 @@ export const RegisterPage = () => {
                       />
                     </div>
 
-                    <Button type="submit" className="w-full">
-                      Create account
-                    </Button>
+                    <div>
+                      <Alert
+                        variant="destructive"
+                        className={` ${
+                          !!errorMessage ? "" : "hidden"
+                        } h-13 py-2 mb-3`}
+                      >
+                        <AlertDescription className="flex items-center justify-center">
+                          <AlertCircle className="h-4 w-4 mr-2" />{" "}
+                          {errorMessage}
+                        </AlertDescription>
+                      </Alert>
+
+                      <Button
+                        disabled={isCheckingAuthentication}
+                        type="submit"
+                        className="w-full"
+                      >
+                        Create account
+                      </Button>
+                    </div>
                   </div>
                 </form>
               </Form>
