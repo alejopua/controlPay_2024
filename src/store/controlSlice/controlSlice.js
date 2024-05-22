@@ -92,6 +92,9 @@ export const controlSlice = createSlice({
         state.payments = state.payments.filter((p) => p.id !== id);
       }
     },
+    pay: (state, action) => {
+      console.log("pagado");
+    },
   },
 });
 
