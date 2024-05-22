@@ -82,7 +82,15 @@ export const controlSlice = createSlice({
       }
     },
     removePayment: (state, { payload }) => {
-      state.payments.filter((payment) => payment.id !== payload.id);
+      const id = payload;
+
+      const paymentIndex = state.payments.findIndex((p) => p.id === id);
+      const payment = state.payments[paymentIndex];
+      console.log(payment);
+
+      if (payment && payment.status === "pending") {
+        state.payments = state.payments.filter((p) => p.id !== id);
+      }
     },
   },
 });
