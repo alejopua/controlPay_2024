@@ -28,8 +28,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { startLogout } from "@/store/auth/thunks";
 import { splitNext } from "@/store/controlSlice/controlSlice";
 import { PaymentItem } from "../components/PaymentItem";
-import PaymentModal from "../components/PaymentModal";
-import { EndPay } from "../components/EndPay";
+
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export const ControlPayPage = () => {
   const dispatch = useDispatch();
@@ -141,11 +141,20 @@ export const ControlPayPage = () => {
               <hr />
               <PaymentsLayout>
                 {payments.map((payment, index) => {
+                  const isLast = index === payments.length - 1;
+                  const actualPayment = !isLast ? payments[index] : null;
+                  const nextPayment = !isLast ? payments[index + 1] : null;
+
+                  const showButton =
+                    actualPayment?.status === nextPayment?.status && !isLast;
+                  console.log(showButton);
+
                   return (
                     <PaymentItem
                       key={payment.id}
                       position={index}
-                      last={payments.length - 1}
+                      last={isLast}
+                      showButton={showButton}
                       payment={payment}
                       isEditing={isEditing}
                       totalAmount={totalAmount}
