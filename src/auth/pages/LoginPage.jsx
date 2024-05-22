@@ -16,6 +16,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { FaGoogle } from "react-icons/fa";
+import { checkingAuthentication, startGoogleSingIn } from "@/store/auth/thunks";
+import { useDispatch } from "react-redux";
 
 // formSchema of form using Zod
 const formSchema = z.object({
@@ -26,6 +28,8 @@ const formSchema = z.object({
 });
 
 export const LoginPage = () => {
+  const dispatch = useDispatch();
+
   // Config react-hook-form with zodResolver and init values
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -37,11 +41,12 @@ export const LoginPage = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    dispatch(checkingAuthentication(data.email, data.password));
   };
 
   const signInWithGoogle = () => {
     console.log("Sign in with Google");
+    dispatch(startGoogleSingIn());
   };
 
   return (
