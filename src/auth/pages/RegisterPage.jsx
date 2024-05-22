@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useDispatch, useSelector } from "react-redux";
+import { startCreatingUserWithEmailPassword } from "@/store/auth/thunks";
+import { useMemo } from "react";
 
 // formSchema of form using Zod
 const formSchema = z.object({
@@ -27,6 +30,11 @@ const formSchema = z.object({
 });
 
 export const RegisterPage = () => {
+  // const { status } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  // const isAuthenticating = useMemo(() => status === "checking", [status]);
+
   // Config react-hook-form with zodResolver and init values
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -39,8 +47,15 @@ export const RegisterPage = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    dispatch(
+      startCreatingUserWithEmailPassword({
+        displayName: data.username,
+        email: data.email,
+        password: data.password,
+      })
+    );
   };
+
   return (
     <>
       <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -86,7 +101,7 @@ export const RegisterPage = () => {
                           <FormItem>
                             <FormLabel>Username</FormLabel>
                             <FormControl>
-                              <Input placeholder="" {...field} />
+                              <Input placeholder="your54" {...field} />
                             </FormControl>
 
                             <FormMessage>
