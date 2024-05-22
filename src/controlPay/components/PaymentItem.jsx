@@ -17,6 +17,7 @@ export const PaymentItem = ({
   isEditing,
   totalAmount,
   splitNext,
+  splitPrev,
   position,
   last,
   showButton,
@@ -41,6 +42,7 @@ export const PaymentItem = ({
           data={payment}
           position={position}
           addNextPay={splitNext}
+          addPrevPay={splitPrev}
           PaymentModalComponent={PaymentModal}
           paymentModalProps={{ payment: payment }}
           showButton={showButton}
@@ -49,6 +51,7 @@ export const PaymentItem = ({
         <EndPay
           data={payment}
           addNextPay={splitNext}
+          addPrevPay={splitPrev}
           PaymentModalComponent={PaymentModal}
           paymentModalProps={{ payment: payment }}
           showButton={showButton}
@@ -59,6 +62,7 @@ export const PaymentItem = ({
         <MiddlePay
           data={payment}
           addNextPay={splitNext}
+          addPrevPay={splitPrev}
           PaymentModalComponent={PaymentModal}
           paymentModalProps={{ payment: payment }}
         />
