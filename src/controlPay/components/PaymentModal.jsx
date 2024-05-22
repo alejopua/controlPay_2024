@@ -23,8 +23,15 @@ import {
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PiTrashLight } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { removePayment } from "@/store/controlSlice/controlSlice";
 
 const PaymentModal = ({ payment }) => {
+  const dispatch = useDispatch();
+
+  const handleRemove = (id) => {
+    dispatch(removePayment(id));
+  };
   return (
     <>
       <Dialog>
@@ -73,7 +80,8 @@ const PaymentModal = ({ payment }) => {
           <DialogFooter>
             <DialogClose asChild>
               <Button
-                onClick={() => console.log("Borrado")}
+                // onClick={() => handleRemove(payment.id)}
+                onClick={() => handleRemove(payment.id)}
                 variant="outline"
                 size="icon"
               >
