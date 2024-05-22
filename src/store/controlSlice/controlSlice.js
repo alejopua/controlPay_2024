@@ -92,10 +92,26 @@ export const controlSlice = createSlice({
         state.payments = state.payments.filter((p) => p.id !== id);
       }
     },
-    pay: (state, action) => {
-      console.log("pagado");
+    pay: (state, { payload }) => {
+      const { id, method } = payload;
+      const paymentIndex = state.payments.findIndex((p) => p.id === id);
+
+      const previousPayment = state.payments[paymentIndex - 1];
+      const payment = state.payments[paymentIndex];
+
+      // !previousPayment: Checks if there is no previous payment.
+      // previousPayment.status !== "pending": Checks if the status of the previous payment is different from "pending".
+
+      if (!previousPayment || previousPayment.status !== "pending") {
+        if (payment && payment.status === "pending") {
+          payment.status = method === "card" ? "card" : "cash";
+          payment.date = formattedDate();
+          state.totalAmount -= payment.amount; // Subtract from totalAmount
+        }
+      }
     },
   },
 });
 
-export const { splitPrev, splitNext, removePayment } = controlSlice.actions;
+export const { splitPrev, splitNext, removePayment, pay } =
+  controlSlice.actions;
