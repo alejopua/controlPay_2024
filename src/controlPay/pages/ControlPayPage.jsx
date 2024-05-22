@@ -53,10 +53,6 @@ export const ControlPayPage = () => {
     dispatch(splitNext(id));
   };
 
-  const handleRemove = (id) => {
-    dispatch(removePayment(id));
-  };
-
   // const handleUpdatePayment = (id, name, amount, percentage, date) => {
   //   dispatch(updatePayment({ id, name, amount, percentage, date }));
   // };
