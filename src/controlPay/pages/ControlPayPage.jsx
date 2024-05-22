@@ -26,10 +26,8 @@ import { PaymentsLayout } from "../layout/PaymentsLayout";
 // import { EndPay } from "../components/EndPay";
 import { useDispatch, useSelector } from "react-redux";
 import { startLogout } from "@/store/auth/thunks";
-import { splitNext } from "@/store/controlSlice/controlSlice";
+import { splitNext, splitPrev } from "@/store/controlSlice/controlSlice";
 import { PaymentItem } from "../components/PaymentItem";
-
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export const ControlPayPage = () => {
   const dispatch = useDispatch();
@@ -43,8 +41,11 @@ export const ControlPayPage = () => {
     dispatch(startLogout());
   };
 
+  const handleSplitPrev = (id) => {
+    dispatch(splitPrev(id));
+  };
+
   const handleSplitNext = (id) => {
-    console.log(id);
     dispatch(splitNext(id));
   };
 
@@ -147,7 +148,6 @@ export const ControlPayPage = () => {
 
                   const showButton =
                     actualPayment?.status === nextPayment?.status && !isLast;
-                  console.log(showButton);
 
                   return (
                     <PaymentItem
@@ -159,6 +159,7 @@ export const ControlPayPage = () => {
                       isEditing={isEditing}
                       totalAmount={totalAmount}
                       splitNext={() => handleSplitNext(payment.id)}
+                      splitPrev={() => handleSplitPrev(payment.id)}
                     />
                   );
                 })}
