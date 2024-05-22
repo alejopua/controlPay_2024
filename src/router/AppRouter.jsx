@@ -1,15 +1,22 @@
-import { AuthRoutes } from "@/auth/routes/AuthRoutes";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ControlPayRoutes } from "@/controlPay/routes/ControlPayRoutes";
-import { Route, Routes } from "react-router-dom";
+import { AuthRoutes } from "@/auth/routes/AuthRoutes";
+import { useCheckAuth } from "@/hooks/useCheckAuth";
+import { Loader } from "@/components/ui/Loader";
 
 export const AppRouter = () => {
+  const { status } = useCheckAuth();
+
+  if (status === "checking") return <Loader />;
+
   return (
     <Routes>
-      {/* Login and register routes */}
-      <Route path="/auth/*" element={<AuthRoutes />} />
-
-      {/* Control Pay */}
-      <Route path="/*" element={<ControlPayRoutes />} />
+      {status === "authenticated" ? (
+        <Route path="/*" element={<ControlPayRoutes />} />
+      ) : (
+        <Route path="/auth/*" element={<AuthRoutes />} />
+      )}
+      <Route path="/*" element={<Navigate to="/auth/login" />} />
     </Routes>
   );
 };
