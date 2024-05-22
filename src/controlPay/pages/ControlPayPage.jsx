@@ -20,60 +20,41 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { PaymentsLayout } from "../layout/PaymentsLayout";
-import { StarPay } from "../components/StartPay";
-import PaymentModal from "../components/PaymentModal";
-import { MiddlePay } from "../components/MiddlePay";
-import { EndPay } from "../components/EndPay";
+// import { StarPay } from "../components/StartPay";
+// import PaymentModal from "../components/PaymentModal";
+// import { MiddlePay } from "../components/MiddlePay";
+// import { EndPay } from "../components/EndPay";
 import { useDispatch, useSelector } from "react-redux";
 import { startLogout } from "@/store/auth/thunks";
-import { Badge } from "@/components/ui/badge";
-
-const DEFAULT_STATE = {
-  payments: [
-    {
-      id: crypto.randomUUID(),
-      name: "Anticipo",
-      amount: 91.0,
-      percentage: 100,
-      status: "pending",
-      date: "2022-01-22",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "pago 1",
-      amount: 91.0,
-      percentage: 100,
-      status: "pending",
-      date: "2022-01-23",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "pago 2",
-      amount: 91.0,
-      percentage: 100,
-      status: "pending",
-      date: "2022-01-24",
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "pago 3",
-      amount: 91.0,
-      percentage: 100,
-      status: "pending",
-      date: "2022-01-25",
-    },
-  ],
-  totalAmount: 182.0,
-};
+import { splitNext } from "@/store/controlSlice/controlSlice";
+import { PaymentItem } from "../components/PaymentItem";
+import PaymentModal from "../components/PaymentModal";
+import { EndPay } from "../components/EndPay";
 
 export const ControlPayPage = () => {
-  const { displayName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { displayName } = useSelector((state) => state.auth);
+  const { payments, isEditing, totalAmount } = useSelector(
+    (state) => state.control
+  );
 
   const onLogout = () => {
     console.log("logout");
     dispatch(startLogout());
   };
+
+  const handleSplitNext = (id) => {
+    console.log(id);
+    dispatch(splitNext(id));
+  };
+
+  // const handleUpdatePayment = (id, name, amount, percentage, date) => {
+  //   dispatch(updatePayment({ id, name, amount, percentage, date }));
+  // };
+
+  // const handleUpdateAmount = (id, newAmount) => {
+  //   dispatch(updateAmount({ id, amount: newAmount }));
+  // };
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -149,49 +130,29 @@ export const ControlPayPage = () => {
                   </span>
                 </Button>
                 <span className="text-sm">
-                  To collect <CardTitle>182 USD</CardTitle>
+                  To collect{" "}
+                  <CardTitle className="w-24 text-right">
+                    {totalAmount} USD
+                  </CardTitle>
                 </span>
               </div>
             </CardHeader>
             <CardContent>
               <hr />
               <PaymentsLayout>
-                {/* Start pay */}
-                <StarPay
-                  title={"Anticipo"}
-                  amount={91.0}
-                  percentage={100}
-                  date={"2022-01-22"}
-                  addPrevPay={() => {}}
-                  addNextPay={() => {}}
-                  PaymentModalComponent={PaymentModal}
-                  paymentModalProps={{ id: "oeee S" }}
-                  statusPay={"pendings"}
-                />
-
-                {/* pay middle */}
-                <MiddlePay
-                  title={"pago 1"}
-                  amount={91.0}
-                  percentage={100}
-                  date={"2022-01-23"}
-                  addNextPay={() => {}}
-                  PaymentModalComponent={PaymentModal}
-                  paymentModalProps={{ id: "oeee M" }}
-                  statusPay={"pendings"}
-                />
-
-                {/* End Pay */}
-                <EndPay
-                  title={"pago 1"}
-                  amount={91.0}
-                  percentage={100}
-                  date={"2022-01-23"}
-                  addNextPay={() => {}}
-                  PaymentModalComponent={PaymentModal}
-                  paymentModalProps={{ id: "oeee M" }}
-                  statusPay={"pendings"}
-                />
+                {payments.map((payment, index) => {
+                  return (
+                    <PaymentItem
+                      key={payment.id}
+                      position={index}
+                      last={payments.length - 1}
+                      payment={payment}
+                      isEditing={isEditing}
+                      totalAmount={totalAmount}
+                      splitNext={() => handleSplitNext(payment.id)}
+                    />
+                  );
+                })}
               </PaymentsLayout>
             </CardContent>
           </Card>
