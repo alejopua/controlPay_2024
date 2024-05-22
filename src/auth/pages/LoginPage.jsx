@@ -1,7 +1,13 @@
+import { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  startGoogleSingIn,
+  startLoginWithEmailPassword,
+} from "@/store/auth/thunks";
 import { Link } from "react-router-dom";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
@@ -14,11 +20,9 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { FaGoogle } from "react-icons/fa";
-import { checkingAuthentication, startGoogleSingIn } from "@/store/auth/thunks";
-import { useDispatch, useSelector } from "react-redux";
-import { useMemo } from "react";
+import { AlertCircle } from "lucide-react";
 
 // formSchema of form using Zod
 const formSchema = z.object({
@@ -29,7 +33,7 @@ const formSchema = z.object({
 });
 
 export const LoginPage = () => {
-  const { status } = useSelector((state) => state.auth);
+  const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const isAuthenticating = useMemo(() => status === "checking", [status]);
@@ -46,7 +50,11 @@ export const LoginPage = () => {
 
   const onSubmit = (data) => {
     dispatch(
-      checkingAuthentication({ email: data.email, password: data.password })
+      startLoginWithEmailPassword({
+        displayName: data.username,
+        email: data.email,
+        password: data.password,
+      })
     );
   };
 
@@ -131,38 +139,39 @@ export const LoginPage = () => {
                       )}
                     />
                   </div>
-                  <Button
-                    disabled={isAuthenticating}
-                    type="submit"
-                    className="w-full"
-                  >
-                    Login
-                  </Button>
+                  <div>
+                    <Alert
+                      variant="destructive"
+                      className={` ${
+                        !!errorMessage ? "" : "hidden"
+                      } h-13 py-2 mb-2`}
+                    >
+                      <AlertDescription className="flex items-center justify-center">
+                        <AlertCircle className="h-4 w-4 mr-2" /> {errorMessage}
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      disabled={isAuthenticating}
+                      type="submit"
+                      className="w-full"
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      disabled={isAuthenticating}
+                      onClick={signInWithGoogle}
+                      className="w-full"
+                    >
+                      <FaGoogle className="mr-1" /> Google
+                    </Button>
+                  </div>
                 </div>
               </form>
             </Form>
 
-            <div className="grid gap-3">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t"></span>
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-              <Button
-                disabled={isAuthenticating}
-                onClick={signInWithGoogle}
-                variant="outline"
-                className="w-full"
-              >
-                <FaGoogle className="mr-1" /> Google
-              </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
+            <div className=" text-center text-sm text-gray-600">
               Don&apos;t have an account?{" "}
               <Link to="/auth/register" className="underline">
                 Sign up
