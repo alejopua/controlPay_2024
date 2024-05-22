@@ -25,22 +25,21 @@ import { PiTrashLight } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa";
 
 const PaymentModal = ({ payment }) => {
-  const statusPay = "pendings";
   return (
     <>
       <Dialog>
         <DialogTrigger
-          disabled={statusPay === "pending" ? false : true}
+          disabled={payment.status === "pending" ? false : true}
           asChild
         >
           <button
             className={`relative size-16 flex items-center justify-center ${
-              statusPay === "pending"
+              payment.status === "pending"
                 ? "bg-gray-200 border-black border-2"
                 : "bg-green-500"
             } rounded-full group`}
           >
-            {statusPay === "pending" ? (
+            {payment.status === "pending" ? (
               <MdOutlineModeEditOutline className="size-5 text-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             ) : (
               <FaCheck className="size-5 text-black " />
