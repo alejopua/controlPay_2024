@@ -2,13 +2,7 @@ import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 
 import { Calendar } from "@/components/ui/calendar";
 
@@ -21,11 +15,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { CalendarIcon } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import { updateAmount, updateName } from "@/store/controlSlice/controlSlice";
 
 export const EditPay = ({ data }) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const { totalAmount } = useSelector((state) => state.control);
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -37,17 +33,26 @@ export const EditPay = ({ data }) => {
     },
   });
 
-  const handleNameChange = (event) => {
+  const handleNameChange = (e) => {
     console.log("cambio nombre");
-    const value = event.target.value;
-    console.log(value);
+    const value = e.target.value;
+    dispatch(updateName({ id: data.id, name: value }));
   };
 
-  const handleAmountChange = (event) => {
-    console.log("cambio numero");
-    const newAmount = parseFloat(event.target.value);
-    // setAmount(newAmount);
-    // onUpdateAmount(payment.id, newAmount);
+  const handleAmountChange = (e) => {
+    const value = parseFloat(e.target.value);
+
+    if (Number.isInteger(value)) {
+      const intValue = parseInt(value);
+
+      form.setValue("amount", intValue);
+      dispatch(updateAmount({ id: data.id, amount: intValue }));
+    } else {
+      const floatValue = parseFloat(value.toFixed(1));
+
+      form.setValue("amount", floatValue);
+      dispatch(updateAmount({ id: data.id, amount: floatValue }));
+    }
   };
 
   const handleDecrease = () => {
@@ -104,26 +109,25 @@ export const EditPay = ({ data }) => {
             control={form.control}
             name="amount"
             render={({ field }) => (
-              // <FormItem className="mt-1 text-center h-1 w-1 p-[2px] ">
               <FormItem className="flex relative items-center">
                 <FormControl className="w-full p-[2px] pl-[7px] mt-1.5 text-left h-[22px]">
                   <Input
                     type="number"
                     {...field}
-                    value={field.value || ""}
                     onChange={(e) => {
-                      handleAmountChange(e);
-                      field.onChange(e);
+                      if (
+                        e.target.value <= totalAmount &&
+                        parseFloat(e.target.value).toFixed(2)
+                      ) {
+                        handleAmountChange(e);
+                        field.onChange(e);
+                      }
                     }}
                   />
                 </FormControl>
                 <span className="absolute text-xs right-1 text-gray-500">
                   USD
                 </span>
-
-                <FormMessage>
-                  {form.formState.errors.amount?.message}
-                </FormMessage>
               </FormItem>
             )}
           />
