@@ -13,6 +13,30 @@ export const controlSlice = createSlice({
         status: "pending", // card | cash
         date: formattedDate(),
       },
+      {
+        id: crypto.randomUUID(),
+        name: "Pago 2",
+        amount: 182.0,
+        percentage: 100,
+        status: "pendings", // card | cash
+        date: formattedDate(),
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Pago 3",
+        amount: 182.0,
+        percentage: 100,
+        status: "pending", // card | cash
+        date: formattedDate(),
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Pago 4",
+        amount: 182.0,
+        percentage: 100,
+        status: "pendings", // card | cash
+        date: formattedDate(),
+      },
     ],
     isEditing: false,
     totalAmount: 182.0,
