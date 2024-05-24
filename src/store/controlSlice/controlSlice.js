@@ -13,22 +13,6 @@ export const controlSlice = createSlice({
         status: "pending", // card | cash
         date: formattedDate(),
       },
-      {
-        id: crypto.randomUUID(),
-        name: "Anticipo 2",
-        amount: 182.0,
-        percentage: 100,
-        status: "pending", // card | cash
-        date: formattedDate(),
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Anticipo 3",
-        amount: 182.0,
-        percentage: 100,
-        status: "pending", // card | cash
-        date: formattedDate(),
-      },
     ],
     isEditing: false,
     totalAmount: 182.0,
@@ -110,8 +94,25 @@ export const controlSlice = createSlice({
         }
       }
     },
+    toggleEditing: (state) => {
+      state.isEditing = !state.isEditing;
+    },
+    submitForm(state, { payload }) {
+      console.log("Form submitted:", payload);
+    },
+    setValidationErrors(state, { payload }) {
+      console.log("Form errors:", payload);
+      // state.validationErrors = action.payload;
+    },
   },
 });
 
-export const { splitPrev, splitNext, removePayment, pay } =
-  controlSlice.actions;
+export const {
+  splitPrev,
+  splitNext,
+  removePayment,
+  pay,
+  toggleEditing,
+  submitForm,
+  setValidationErrors,
+} = controlSlice.actions;
