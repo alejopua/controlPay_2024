@@ -10,30 +10,6 @@ export const controlSlice = createSlice({
         name: "Anticipo",
         amount: 182.0,
         percentage: 100,
-        status: "pendings", // card | cash
-        date: formattedDate(),
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Pago 2",
-        amount: 182.0,
-        percentage: 100,
-        status: "pendings", // card | cash
-        date: formattedDate(),
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Pago 3",
-        amount: 182.0,
-        percentage: 100,
-        status: "pending", // card | cash
-        date: formattedDate(),
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Pago 4",
-        amount: 182.0,
-        percentage: 100,
         status: "pending", // card | cash
         date: formattedDate(),
       },
@@ -135,6 +111,7 @@ export const controlSlice = createSlice({
       const { id, amount } = payload;
       const paymentIndex = state.payments.findIndex((p) => p.id === id);
       const payment = state.payments[paymentIndex];
+      const lastIndex = state.payments.length - 1;
 
       if (payment && payment.status === "pending") {
         const previousAmount = payment.amount;
@@ -144,7 +121,7 @@ export const controlSlice = createSlice({
         const different = previousAmount - amount;
 
         if (different !== 0) {
-          if (paymentIndex < state.payments.length - 1) {
+          if (paymentIndex < lastIndex) {
             const nextPaymentIndex = paymentIndex + 1;
             const nextPayment = state.payments[nextPaymentIndex];
 
@@ -153,7 +130,7 @@ export const controlSlice = createSlice({
               nextPayment.percentage =
                 (nextPayment.amount / state.totalAmount) * 100;
             }
-          } else if (paymentIndex === state.payments.length - 1) {
+          } else if (paymentIndex === lastIndex) {
             const prevPaymentIndex = paymentIndex - 1;
             const prevPayment = state.payments[prevPaymentIndex];
 
@@ -163,6 +140,44 @@ export const controlSlice = createSlice({
                 (prevPayment.amount / state.totalAmount) * 100;
             }
           }
+        }
+      }
+    },
+    updatePercentage: (state, { payload }) => {
+      const { id, change } = payload;
+      const paymentIndex = state.payments.findIndex((pago) => pago.id === id);
+      const payment = state.payments[paymentIndex];
+      const lastIndex = state.payments.length - 1;
+
+      if (payment && payment.status === "pending") {
+        const closestPaymentIndex =
+          paymentIndex !== lastIndex ? paymentIndex + 1 : paymentIndex - 1;
+        const closestPayment = state.payments[closestPaymentIndex];
+
+        if (closestPayment && closestPayment.status === "pending") {
+          if (change === "increase" && closestPayment.percentage > 0) {
+            const incrementedPercentage = Math.ceil(
+              parseInt(payment.percentage + 1)
+            );
+
+            payment.percentage = incrementedPercentage;
+            closestPayment.percentage = 100 - incrementedPercentage;
+          } else if (change === "decrease" && payment.percentage > 0) {
+            console.log(payment.percentage);
+            const decrementedPercentage = Math.ceil(
+              parseInt(payment.percentage - 1)
+            );
+
+            console.log(decrementedPercentage);
+            console.log(100 - decrementedPercentage);
+
+            payment.percentage = decrementedPercentage;
+            closestPayment.percentage = 100 - decrementedPercentage;
+          }
+
+          payment.amount = (state.totalAmount * payment.percentage) / 100;
+          closestPayment.amount =
+            (state.totalAmount * closestPayment.percentage) / 100;
         }
       }
     },
@@ -178,4 +193,5 @@ export const {
   submitForm,
   updateName,
   updateAmount,
+  updatePercentage,
 } = controlSlice.actions;
