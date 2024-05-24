@@ -124,10 +124,6 @@ export const controlSlice = createSlice({
     submitForm(state, { payload }) {
       console.log("Form submitted:", payload);
     },
-    setValidationErrors(state, { payload }) {
-      console.log("Form errors:", payload);
-      // state.validationErrors = action.payload;
-    },
     updateName: (state, { payload }) => {
       const { id, name } = payload;
       const payment = state.payments.find((payment) => payment.id === id);
@@ -180,7 +176,6 @@ export const {
   pay,
   toggleEditing,
   submitForm,
-  setValidationErrors,
   updateName,
   updateAmount,
 } = controlSlice.actions;
