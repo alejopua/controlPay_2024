@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react";
-import { EditPay } from "./EditPay";
+import { useSelector } from "react-redux";
 import { EndPay } from "./EndPay";
 import { MiddlePay } from "./MiddlePay";
 import PaymentModal from "./PaymentModal";
@@ -14,27 +14,12 @@ import { StarPay } from "./StartPay";
 
 export const PaymentItem = ({
   payment,
-  isEditing,
-  totalAmount,
   splitNext,
   splitPrev,
   position,
-  last,
-  showButton,
+  shouldDisableAddButton,
 }) => {
-  // const [name, setName] = useState(payment.name);
-  // const [amount, setAmount] = useState(payment.amount);
-  // const [date, setDate] = useState(payment.date);
-  // const [percentage, setPercentage] = useState(payment.percentage);
-
-  // useEffect(() => {
-  //   if (!isEditing) {
-  //     setName(payment.name);
-  //     setAmount(payment.amount);
-  //     setDate(payment.date);
-  //     setPercentage(payment.percentage);
-  //   }
-  // }, [isEditing, payment]);
+  const { payments } = useSelector((state) => state.control);
   return (
     <>
       {position === 0 ? (
@@ -45,19 +30,17 @@ export const PaymentItem = ({
           addPrevPay={splitPrev}
           PaymentModalComponent={PaymentModal}
           paymentModalProps={{ payment: payment }}
-          showButton={showButton}
+          shouldDisableAddButton={shouldDisableAddButton}
         />
-      ) : last ? (
+      ) : position === payments.length - 1 ? (
         <EndPay
           data={payment}
           addNextPay={splitNext}
           addPrevPay={splitPrev}
           PaymentModalComponent={PaymentModal}
           paymentModalProps={{ payment: payment }}
-          showButton={showButton}
+          shouldDisableAddButton={shouldDisableAddButton}
         />
-      ) : isEditing && payment.status === "pending" ? (
-        <EditPay />
       ) : (
         <MiddlePay
           data={payment}
@@ -65,6 +48,8 @@ export const PaymentItem = ({
           addPrevPay={splitPrev}
           PaymentModalComponent={PaymentModal}
           paymentModalProps={{ payment: payment }}
+          shouldDisableAddButton={shouldDisableAddButton}
+          position={position}
         />
       )}
     </>
