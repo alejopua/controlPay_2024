@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { EditPay } from "./EditPay";
 // import { EditPay } from "./EditPay";
 
 export const MiddlePay = ({
@@ -35,11 +36,11 @@ export const MiddlePay = ({
         )}
         <div className="absolute w-max text-xs text-center md:text-base top-16">
           {isEditing && data.status === "pending" ? (
-            <>{"hola"}</>
+            <EditPay data={data} />
           ) : (
             <>
-              <h1>{data.name}</h1>
-              <h2>
+              <h1 className="text-lg">{data.name}</h1>
+              <p className="text-sm">
                 {`${
                   Number.isInteger(data.amount)
                     ? data.amount.toString()
@@ -49,7 +50,7 @@ export const MiddlePay = ({
                     ? data.percentage.toString()
                     : data.percentage.toFixed(1)
                 }%)`}
-              </h2>
+              </p>
               {data.status !== "pending" ? (
                 <span>
                   <p className="text-sm text-green-600">{`Pagado el ${data.date}`}</p>
