@@ -10,7 +10,7 @@ export const controlSlice = createSlice({
         name: "Anticipo",
         amount: 182.0,
         percentage: 100,
-        status: "pending", // card | cash
+        status: "pendings", // card | cash
         date: formattedDate(),
       },
       {
@@ -34,7 +34,7 @@ export const controlSlice = createSlice({
         name: "Pago 4",
         amount: 182.0,
         percentage: 100,
-        status: "pendings", // card | cash
+        status: "pending", // card | cash
         date: formattedDate(),
       },
     ],
@@ -128,6 +128,48 @@ export const controlSlice = createSlice({
       console.log("Form errors:", payload);
       // state.validationErrors = action.payload;
     },
+    updateName: (state, { payload }) => {
+      const { id, name } = payload;
+      const payment = state.payments.find((payment) => payment.id === id);
+      if (payment) {
+        payment.name = name;
+      }
+    },
+    updateAmount: (state, { payload }) => {
+      const { id, amount } = payload;
+      const paymentIndex = state.payments.findIndex((p) => p.id === id);
+      const payment = state.payments[paymentIndex];
+
+      if (payment && payment.status === "pending") {
+        const previousAmount = payment.amount;
+        payment.amount = amount;
+        payment.percentage = (amount / state.totalAmount) * 100;
+
+        const different = previousAmount - amount;
+
+        if (different !== 0) {
+          if (paymentIndex < state.payments.length - 1) {
+            const nextPaymentIndex = paymentIndex + 1;
+            const nextPayment = state.payments[nextPaymentIndex];
+
+            if (nextPayment.status === "pending") {
+              nextPayment.amount += different;
+              nextPayment.percentage =
+                (nextPayment.amount / state.totalAmount) * 100;
+            }
+          } else if (paymentIndex === state.payments.length - 1) {
+            const prevPaymentIndex = paymentIndex - 1;
+            const prevPayment = state.payments[prevPaymentIndex];
+
+            if (prevPayment.status === "pending") {
+              prevPayment.amount += different;
+              prevPayment.percentage =
+                (prevPayment.amount / state.totalAmount) * 100;
+            }
+          }
+        }
+      }
+    },
   },
 });
 
@@ -139,4 +181,6 @@ export const {
   toggleEditing,
   submitForm,
   setValidationErrors,
+  updateName,
+  updateAmount,
 } = controlSlice.actions;
