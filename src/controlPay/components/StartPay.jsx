@@ -1,14 +1,18 @@
+import { useSelector } from "react-redux";
+import { EditPay } from "./EditPay";
+
 export const StarPay = ({
-  data,
-  addPrevPay,
   addNextPay,
+  addPrevPay,
+  data,
   PaymentModalComponent,
   paymentModalProps,
-  showButton,
+  position,
+  shouldDisableAddButton,
 }) => {
+  const { isEditing } = useSelector((state) => state.control);
   const handleClick = () => {
     if (data.status === "pending") {
-      console.log("addNextPay", data.id);
       addNextPay();
     } else {
       addPrevPay(data.id);
@@ -34,26 +38,32 @@ export const StarPay = ({
         {PaymentModalComponent && (
           <PaymentModalComponent {...paymentModalProps} />
         )}
-        <div className="absolute w-max text-xs text-center md:text-base top-16">
-          <h1>{data.name}</h1>
-          <h2>
-            {`${
-              Number.isInteger(data.amount)
-                ? data.amount.toString()
-                : data.amount.toFixed(1)
-            } USD (${
-              Number.isInteger(data.percentage)
-                ? data.percentage.toString()
-                : data.percentage.toFixed(1)
-            }%)`}
-          </h2>
-          {data.status !== "pending" ? (
-            <span>
-              <p className="text-sm text-green-600">{`Pagado el ${data.date}`}</p>
-              <p className="text-sm text-green-600">{`con ${data.status}`}</p>
-            </span>
+        <div className="absolute w-max text-center top-16">
+          {isEditing && data.status === "pending" ? (
+            <EditPay data={data} />
           ) : (
-            <p className="text-sm text-gray-500">{data.date}</p>
+            <>
+              <h1 className="text-lg">{data.name}</h1>
+              <p className="text-sm">
+                {`${
+                  Number.isInteger(data.amount)
+                    ? data.amount.toString()
+                    : data.amount.toFixed(1)
+                } USD (${
+                  Number.isInteger(data.percentage)
+                    ? data.percentage.toString()
+                    : data.percentage.toFixed(1)
+                }%)`}
+              </p>
+              {data.status !== "pending" ? (
+                <span>
+                  <p className="text-sm text-green-600">{`Pagado el ${data.date}`}</p>
+                  <p className="text-sm text-green-600">{`con ${data.status}`}</p>
+                </span>
+              ) : (
+                <p className="text-sm text-gray-500">{data.date}</p>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -63,15 +73,14 @@ export const StarPay = ({
             data.status === "pending" ? "bg-gray-200" : "bg-green-600"
           } rounded`}
         ></div>
-        <button
-          onClick={handleClick}
-          disabled={showButton}
-          className={`absolute z-50 right-[-12px] top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gray-200 text-xs text-center rounded-full flex items-center justify-center ${
-            showButton ? "opacity-0" : "opacity-0 hover:opacity-100"
-          } transition-opacity duration-300`}
-        >
-          +
-        </button>
+        {!shouldDisableAddButton(position) && (
+          <button
+            onClick={handleClick}
+            className={`absolute z-50 right-[-12px] top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gray-200 text-xs text-center rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300`}
+          >
+            +
+          </button>
+        )}
       </div>
     </div>
   );

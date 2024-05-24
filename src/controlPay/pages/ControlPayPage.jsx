@@ -27,16 +27,16 @@ import { PaymentsLayout } from "../layout/PaymentsLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { startLogout } from "@/store/auth/thunks";
 import {
-  removePayment,
   splitNext,
   splitPrev,
+  toggleEditing,
 } from "@/store/controlSlice/controlSlice";
 import { PaymentItem } from "../components/PaymentItem";
 
 export const ControlPayPage = () => {
   const dispatch = useDispatch();
   const { displayName } = useSelector((state) => state.auth);
-  const { payments, isEditing, totalAmount } = useSelector(
+  const { payments, totalAmount, isEditing } = useSelector(
     (state) => state.control
   );
 
@@ -51,6 +51,29 @@ export const ControlPayPage = () => {
 
   const handleSplitNext = (id) => {
     dispatch(splitNext(id));
+  };
+
+  const shouldDisableAddButton = (index) => {
+    if (index >= payments.length - 1) {
+      return false;
+    } else if (payments[index].status === "pending" && payments.length === 1) {
+      return true;
+    } else if (
+      index < payments.length - 1 &&
+      payments[index].status !== "pending" &&
+      payments[index + 1].status !== "pending"
+    ) {
+      return true;
+    }
+  };
+
+  const handleToggleEditing = () => {
+    dispatch(toggleEditing());
+  };
+
+  const handleSubmit = () => {
+    console.log("submit");
+    dispatch(toggleEditing());
   };
 
   // const handleUpdatePayment = (id, name, amount, percentage, date) => {
@@ -124,16 +147,27 @@ export const ControlPayPage = () => {
                 <CardDescription>Recent transaction.</CardDescription>
               </div>
               <div className="flex flex-row items-center gap-3">
-                <Button
-                  asChild
-                  size="sm"
-                  className="ml-auto gap-1 cursor-pointer"
-                >
-                  <span>
-                    Edit
-                    <Pencil className="ml-1 h-4 w-4" />
-                  </span>
-                </Button>
+                {isEditing ? (
+                  <Button
+                    size="sm"
+                    onClick={handleSubmit}
+                    className="w-[80px] text-sm ml-auto gap-1"
+                  >
+                    Guardar
+                  </Button>
+                ) : (
+                  <Button
+                    size="sm"
+                    onClick={handleToggleEditing}
+                    className="w-[80px] text-sm ml-auto gap-1"
+                  >
+                    <span className="flex">
+                      Edit
+                      <Pencil className="ml-1 h-4 w-4" />
+                    </span>
+                  </Button>
+                )}
+
                 <span className="text-sm">
                   To collect{" "}
                   <CardTitle className="w-24 text-right">
@@ -146,24 +180,16 @@ export const ControlPayPage = () => {
               <hr />
               <PaymentsLayout>
                 {payments.map((payment, index) => {
-                  const isLast = index === payments.length - 1;
-                  const actualPayment = !isLast ? payments[index] : null;
-                  const nextPayment = !isLast ? payments[index + 1] : null;
-
-                  const showButton =
-                    actualPayment?.status === nextPayment?.status && !isLast;
-
                   return (
                     <PaymentItem
                       key={payment.id}
                       position={index}
-                      last={isLast}
-                      showButton={showButton}
                       payment={payment}
-                      isEditing={isEditing}
-                      totalAmount={totalAmount}
                       splitNext={() => handleSplitNext(payment.id)}
                       splitPrev={() => handleSplitPrev(payment.id)}
+                      shouldDisableAddButton={() =>
+                        shouldDisableAddButton(index)
+                      }
                     />
                   );
                 })}
