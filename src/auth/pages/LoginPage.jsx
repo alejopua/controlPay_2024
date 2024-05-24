@@ -32,6 +32,11 @@ const formSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters." }),
 });
 
+// Creación de la vista de un formulario de login, el cual usa react-hook-form y zod para la validación, asi como el uso de componentes de la librería de shadcn-ui
+
+// El uso de la librería de shadcn-ui con tailwind fue usada con el fin de facilitar y agilizar el diseño. Los componentes me ahorra tiempo en el diseño y me permite enfocarme en la lógica de la aplicación.
+
+// El uso de zod y react-hook-form me permite validar los campos del formulario de manera sencilla y rápida, además de que me permite tener un código más limpio y fácil de leer. en comparación de la manera tradicional.
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -74,7 +79,7 @@ export const LoginPage = () => {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                “Ahora es mucho mas facil tener el control de mis pagos con
+                “Ahora es mucho mas fácil tener el control de mis pagos con
                 Control Pay”
               </p>
               <footer className="text-sm">Alejandro Ramírez</footer>

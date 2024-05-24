@@ -30,6 +30,7 @@ const formSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters." }),
 });
 
+// View del formulario de registro, construido con react-hook-form y zod para la validación, asi como el uso de componentes de la librería de shadcn-ui
 export const RegisterPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();

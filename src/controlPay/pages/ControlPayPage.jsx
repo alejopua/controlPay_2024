@@ -1,8 +1,15 @@
+import { useDispatch, useSelector } from "react-redux";
+import { startLogout } from "@/store/auth/thunks";
+import {
+  splitNext,
+  splitPrev,
+  toggleEditing,
+} from "@/store/controlSlice/controlSlice";
 import { Link } from "react-router-dom";
-import { Menu, Package2, Pencil } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { PaymentItem } from "../components/PaymentItem";
+import { PaymentsLayout } from "../layout/PaymentsLayout";
+
 import {
   Card,
   CardContent,
@@ -10,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,20 +26,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { PaymentsLayout } from "../layout/PaymentsLayout";
-// import { StarPay } from "../components/StartPay";
-// import PaymentModal from "../components/PaymentModal";
-// import { MiddlePay } from "../components/MiddlePay";
-// import { EndPay } from "../components/EndPay";
-import { useDispatch, useSelector } from "react-redux";
-import { startLogout } from "@/store/auth/thunks";
-import {
-  splitNext,
-  splitPrev,
-  toggleEditing,
-} from "@/store/controlSlice/controlSlice";
-import { PaymentItem } from "../components/PaymentItem";
+import { Menu, Package2, Pencil } from "lucide-react";
 
 export const ControlPayPage = () => {
   const dispatch = useDispatch();
@@ -75,14 +74,6 @@ export const ControlPayPage = () => {
     console.log("submit");
     dispatch(toggleEditing());
   };
-
-  // const handleUpdatePayment = (id, name, amount, percentage, date) => {
-  //   dispatch(updatePayment({ id, name, amount, percentage, date }));
-  // };
-
-  // const handleUpdateAmount = (id, newAmount) => {
-  //   dispatch(updateAmount({ id, amount: newAmount }));
-  // };
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -162,14 +153,14 @@ export const ControlPayPage = () => {
                     className="w-[80px] text-sm ml-auto gap-1"
                   >
                     <span className="flex">
-                      Edit
+                      Editar
                       <Pencil className="ml-1 h-4 w-4" />
                     </span>
                   </Button>
                 )}
 
                 <span className="text-sm">
-                  To collect{" "}
+                  Por Cobrar
                   <CardTitle className="w-24 text-right">
                     {totalAmount} USD
                   </CardTitle>

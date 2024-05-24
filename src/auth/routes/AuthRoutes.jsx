@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage, RegisterPage } from "../pages";
 
+// Creación de las rutas de navegación de la autenticación.
 export const AuthRoutes = () => {
   return (
     <Routes>

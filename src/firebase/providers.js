@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import { FirebaseAuth } from "./config";
 
+// Configuración para manejar los metodos de autenticación que le permiten al usuario ingresar o salir de la misma
 const googleProvider = new GoogleAuthProvider();
 
 export const singInWithGoogle = async () => {

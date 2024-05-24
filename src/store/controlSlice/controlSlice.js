@@ -97,9 +97,6 @@ export const controlSlice = createSlice({
     toggleEditing: (state) => {
       state.isEditing = !state.isEditing;
     },
-    submitForm(state, { payload }) {
-      console.log("Form submitted:", payload);
-    },
     updateName: (state, { payload }) => {
       const { id, name } = payload;
       const payment = state.payments.find((payment) => payment.id === id);
@@ -190,7 +187,6 @@ export const {
   removePayment,
   pay,
   toggleEditing,
-  submitForm,
   updateName,
   updateAmount,
   updatePercentage,

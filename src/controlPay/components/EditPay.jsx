@@ -37,12 +37,14 @@ export const EditPay = ({ data }) => {
     },
   });
 
+  //Emite un evento para actualizar el nombre de la persona
   const handleNameChange = (e) => {
     console.log("cambio nombre");
     const value = e.target.value;
     dispatch(updateName({ id: data.id, name: value }));
   };
 
+  //Emite un evento para actualizar la cantidad de dinero
   const handleAmountChange = (e) => {
     const value = parseFloat(e.target.value);
 
