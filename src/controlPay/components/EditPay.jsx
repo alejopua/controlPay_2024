@@ -17,7 +17,11 @@ import { Input } from "@/components/ui/input";
 import { CalendarIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { updateAmount, updateName } from "@/store/controlSlice/controlSlice";
+import {
+  updateAmount,
+  updateName,
+  updatePercentage,
+} from "@/store/controlSlice/controlSlice";
 
 export const EditPay = ({ data }) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -56,18 +60,19 @@ export const EditPay = ({ data }) => {
   };
 
   const handleDecrease = () => {
-    const currentValue = form.getValues("percentage");
-    console.log(currentValue);
+    const currentValue = Math.ceil(parseInt(form.getValues("percentage")));
     if (currentValue > 0) {
       form.setValue("percentage", currentValue - 1);
+      dispatch(updatePercentage({ id: data.id, change: "decrease" }));
     }
   };
 
   const handleIncrease = () => {
-    const currentValue = form.getValues("percentage");
+    const currentValue = Math.ceil(parseInt(form.getValues("percentage")));
     console.log(currentValue);
     if (currentValue < 100) {
       form.setValue("percentage", currentValue + 1);
+      dispatch(updatePercentage({ id: data.id, change: "increase" }));
     }
   };
 
