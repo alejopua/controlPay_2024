@@ -31,6 +31,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Package2, Pencil } from "lucide-react";
+import { DashboardLayout } from "../layout/PaymentsHistoryLayout";
 
 export const ControlPayPage = () => {
   const dispatch = useDispatch();
@@ -80,8 +81,8 @@ export const ControlPayPage = () => {
       <header className="sticky top-0 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:px-6">
         <nav className="hidden gap-6 font-medium md:flex md:flex-row md:items-center md:text-sm">
           <Package2 className="h-6 w-6" />
-          <Link to="/" className="hover:text-zinc-700">
-            Dashboard
+          <Link to="/" className="hover:text-zinc-700 cursor-pointer">
+            <strong>Mis Pagos</strong>
           </Link>
         </nav>
         <Sheet>
@@ -187,6 +188,7 @@ export const ControlPayPage = () => {
               </PaymentsLayout>
             </CardContent>
           </Card>
+          <DashboardLayout />
         </div>
       </main>
     </div>
